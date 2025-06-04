@@ -295,12 +295,33 @@
                 $('.info-projet').slideToggle();
             });
 
-            $('#btnAllumer').click(function() {
-                setStateBulb('on');
-            });
-
-            $('#btnEteindre').click(function() {
-                setStateBulb('off');
+            // Gestion de l'interrupteur
+            $('#switchAmpoule').change(function() {
+                const state = $(this).is(':checked') ? 'on' : 'off';
+                const url = `https://server-ista-gm-production.up.railway.app/lamp/${state}`;
+                
+                $(this).prop('disabled', true);
+                
+                $.get(url)
+                    .done(function(data) {
+                        if (data == "1") {
+                            $('.ampoule').removeClass('eteinte').addClass('allumee');
+                            $('#ampouleState').html('<i class="fas fa-sun"></i> État: Allumée')
+                                .removeClass('text-danger').addClass('text-success');
+                        } else {
+                            $('.ampoule').removeClass('allumee').addClass('eteinte');
+                            $('#ampouleState').html('<i class="fas fa-moon"></i> État: Éteinte')
+                                .removeClass('text-success').addClass('text-danger');
+                        }
+                    })
+                    .fail(function() {
+                        updateConnectionStatus(false);
+                        // Remettre l'interrupteur dans son état précédent en cas d'erreur
+                        $(this).prop('checked', !$(this).is(':checked'));
+                    })
+                    .always(function() {
+                        $('#switchAmpoule').prop('disabled', false);
+                    });
             });
         });
     </script>
