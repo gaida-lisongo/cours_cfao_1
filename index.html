@@ -295,6 +295,20 @@
                 $('.info-projet').slideToggle();
             });
 
+            $.get('https://server-ista-gm-production.up.railway.app/esp')
+                .done(function(data) {
+                    if (data == "1") {
+                        //Change de l'état de l'interrupteur en fonction de l'état de l'ampoule
+                        $('#switchAmpoule').prop('checked', true);
+                        
+                    } else {
+                        $('#switchAmpoule').prop('checked', false);
+                    }
+                })
+                .fail(function() {
+                    updateConnectionStatus(false);
+                });
+                
             // Gestion de l'interrupteur
             $('#switchAmpoule').change(function() {
                 const state = $(this).is(':checked') ? 'on' : 'off';
