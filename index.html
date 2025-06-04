@@ -247,10 +247,13 @@
                 .done(function(data) {
                     console.log(data);
                     if (data == "1") {
+                        //Change de l'état de l'interrupteur en fonction de l'état de l'ampoule
+                        $('#switchAmpoule').prop('checked', true);
                         $('.ampoule').removeClass('eteinte').addClass('allumee');
                         $('#ampouleState').html('<i class="fas fa-sun"></i> État: Allumée')
                             .removeClass('text-danger').addClass('text-success');
                     } else {
+                        $('#switchAmpoule').prop('checked', false);
                         $('.ampoule').removeClass('allumee').addClass('eteinte');
                         $('#ampouleState').html('<i class="fas fa-moon"></i> État: Éteinte')
                             .removeClass('text-success').addClass('text-danger');
@@ -294,20 +297,6 @@
                 $('.control-panel').slideToggle();
                 $('.info-projet').slideToggle();
             });
-
-            $.get('https://server-ista-gm-production.up.railway.app/esp')
-                .done(function(data) {
-                    if (data == "1") {
-                        //Change de l'état de l'interrupteur en fonction de l'état de l'ampoule
-                        $('#switchAmpoule').prop('checked', true);
-                        
-                    } else {
-                        $('#switchAmpoule').prop('checked', false);
-                    }
-                })
-                .fail(function() {
-                    updateConnectionStatus(false);
-                });
                 
             // Gestion de l'interrupteur
             $('#switchAmpoule').change(function() {
