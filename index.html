@@ -83,9 +83,11 @@
         }
         .btn-allumer {
             background: linear-gradient(45deg, #2ecc71, #27ae60);
+            color: white;
         }
         .btn-eteindre {
             background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
         }
         .status-indicator {
             padding: 0.5rem;
@@ -102,32 +104,21 @@
             font-size: 0.9rem;
             color: #2ecc71;
         }
+        #ampouleState {
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="card">            <!-- Section titre -->
+        <div class="card">
+            <!-- Section titre -->
             <div class="row text-center mb-4">
                 <div class="col">
                     <h1 class="display-4 text-white">Projet IoT CFAO 2025</h1>
                     <p class="lead text-white">Contrôle d'éclairage intelligent</p>
-                    <div class="mt-4">
-                        <p class="text-white-50 mb-2">Sous la direction de :</p>
-                        <h5 class="text-white">Prof. Narcisse MENI BABAKIDI</h5>
-                        <p class="text-white-50 mt-3">Assisté par :</p>
-                        <p class="text-white mb-1">Ass. LISONGO BAÏTA Gaîda</p>
-                        <p class="text-white mb-1">Ass. DIAMONEKA VAKANDA Jonathan</p>
-                        <p class="text-white mb-1">Ass. NTOYA MABEKA Rodrigue</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section ampoule -->
-            <div class="row mb-4">
-                <div class="col text-center">
-                    <div class="ampoule-container">
-                        <div class="ampoule"></div>
-                    </div>
                 </div>
             </div>
 
@@ -143,14 +134,37 @@
                 </div>
             </div>
 
+            <!-- Section ampoule -->
+            <div class="row mb-4">
+                <div class="col text-center">
+                    <div class="ampoule-container">
+                        <div class="ampoule"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Indicateur de statut -->
-            <div class="row">
+            <div class="row mb-4">
                 <div class="col">
                     <div class="status-indicator">
                         <span class="connection-status">
                             <i class="fas fa-wifi"></i> Connecté à l'ESP
                         </span>
-                        <div id="ampouleState" class="mt-2"></div>
+                        <div id="ampouleState" class="mt-2 fs-5"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section enseignants -->
+            <div class="row text-center mt-5">
+                <div class="col">
+                    <div class="card bg-dark bg-opacity-50 p-4">
+                        <p class="text-white-50 mb-2">Sous la direction de :</p>
+                        <h5 class="text-white">Prof. Narcisse MENI BABAKIDI</h5>
+                        <p class="text-white-50 mt-3">Assisté par :</p>
+                        <p class="text-white mb-1">Ass. LISONGO BAÏTA Gaîda</p>
+                        <p class="text-white mb-1">Ass. DIAMONEKA VAKANDA Jonathan</p>
+                        <p class="text-white mb-1">Ass. NTOYA MABEKA Rodrigue</p>
                     </div>
                 </div>
             </div>
@@ -180,10 +194,12 @@
                     console.log(data);
                     if (data == "1") {
                         $('.ampoule').removeClass('eteinte').addClass('allumee');
-                        $('#ampouleState').html('<i class="fas fa-sun"></i> État: Allumée');
+                        $('#ampouleState').html('<i class="fas fa-sun"></i> État: Allumée')
+                            .removeClass('text-danger').addClass('text-success');
                     } else {
                         $('.ampoule').removeClass('allumee').addClass('eteinte');
-                        $('#ampouleState').html('<i class="fas fa-moon"></i> État: Éteinte');
+                        $('#ampouleState').html('<i class="fas fa-moon"></i> État: Éteinte')
+                            .removeClass('text-success').addClass('text-danger');
                     }
                     updateConnectionStatus(true);
                 })
@@ -201,10 +217,12 @@
                     console.log(data);
                     if (data == "1") {
                         $('.ampoule').removeClass('eteinte').addClass('allumee');
-                        $('#ampouleState').html('<i class="fas fa-sun"></i> État: Allumée');
+                        $('#ampouleState').html('<i class="fas fa-sun"></i> État: Allumée')
+                            .removeClass('text-danger').addClass('text-success');
                     } else {
                         $('.ampoule').removeClass('allumee').addClass('eteinte');
-                        $('#ampouleState').html('<i class="fas fa-moon"></i> État: Éteinte');
+                        $('#ampouleState').html('<i class="fas fa-moon"></i> État: Éteinte')
+                            .removeClass('text-success').addClass('text-danger');
                     }
                 })
                 .always(function() {
