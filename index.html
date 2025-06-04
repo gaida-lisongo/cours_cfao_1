@@ -99,8 +99,7 @@
         }
         .status-indicator i {
             margin-right: 8px;
-        }
-        .connection-status {
+        }        .connection-status {
             font-size: 0.9rem;
             color: #2ecc71;
         }
@@ -108,6 +107,46 @@
             font-size: 1.2rem;
             font-weight: bold;
             transition: color 0.3s ease;
+        }
+        .form-check-input.custom-switch {
+            width: 60px;
+            height: 30px;
+            margin: 0;
+            position: relative;
+            background-color: #e74c3c;
+            border-color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .form-check-input.custom-switch:checked {
+            background-color: #2ecc71;
+            border-color: transparent;
+        }
+        .form-check-input.custom-switch:focus {
+            box-shadow: 0 0 0 0.25rem rgba(46, 204, 113, 0.25);
+        }
+        .form-check-label {
+            font-size: 1.2rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            .card {
+                padding: 1rem;
+            }
+            .encadreurs-card {
+                margin: 1rem -0.5rem;
+                padding: 1rem;
+            }
+            .display-4 {
+                font-size: 2rem;
+            }
+            .lead {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
@@ -120,22 +159,20 @@
                     <h1 class="display-4 text-white">Projet IoT CFAO 2025</h1>
                     <p class="lead text-white">Contrôle d'éclairage intelligent</p>
                 </div>
-            </div>
-
-            <!-- Section boutons -->
+            </div>            <!-- Section switch -->
             <div class="row mb-4">
                 <div class="col text-center">
-                    <button id="btnAllumer" class="btn btn-custom btn-allumer me-3">
-                        <i class="fas fa-power-off"></i> Allumer
-                    </button>
-                    <button id="btnEteindre" class="btn btn-custom btn-eteindre">
-                        <i class="fas fa-power-off"></i> Éteindre
-                    </button>
+                    <div class="form-check form-switch d-inline-block">
+                        <input class="form-check-input custom-switch" type="checkbox" id="switchAmpoule">
+                        <label class="form-check-label ms-2 text-white" for="switchAmpoule">
+                            Interrupteur
+                        </label>
+                    </div>
                 </div>
             </div>
 
             <!-- Section ampoule -->
-            <div class="row mb-4">
+            <div class="row">
                 <div class="col text-center">
                     <div class="ampoule-container">
                         <div class="ampoule"></div>
@@ -144,7 +181,7 @@
             </div>
 
             <!-- Indicateur de statut -->
-            <div class="row mb-4">
+            <div class="row">
                 <div class="col">
                     <div class="status-indicator">
                         <span class="connection-status">
@@ -153,18 +190,37 @@
                         <div id="ampouleState" class="mt-2 fs-5"></div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Section enseignants -->
+            </div>            <!-- Section enseignants -->
             <div class="row text-center mt-5">
                 <div class="col">
-                    <div class="card bg-dark bg-opacity-50 p-4">
-                        <p class="text-white-50 mb-2">Sous la direction de :</p>
-                        <h5 class="text-white">Prof. Narcisse MENI BABAKIDI</h5>
-                        <p class="text-white-50 mt-3">Assisté par :</p>
-                        <p class="text-white mb-1">Ass. LISONGO BAÏTA Gaîda</p>
-                        <p class="text-white mb-1">Ass. DIAMONEKA VAKANDA Jonathan</p>
-                        <p class="text-white mb-1">Ass. NTOYA MABEKA Rodrigue</p>
+                    <div class="card bg-dark bg-opacity-50 p-4 encadreurs-card">
+                        <div class="card-body">
+                            <h4 class="text-white mb-4">Encadrement</h4>
+                            <div class="mb-4">
+                                <p class="text-white-50 mb-2">Sous la direction de :</p>
+                                <h5 class="text-white">Prof. Narcisse MENI BABAKIDI</h5>
+                            </div>
+                            <div class="assistants">
+                                <p class="text-white-50 mb-3">Assisté par :</p>
+                                <div class="row justify-content-center">
+                                    <div class="col-md-4 mb-3">
+                                        <div class="p-2 rounded bg-dark bg-opacity-50">
+                                            <p class="text-white mb-0">Ass. LISONGO BAÏTA Gaîda</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="p-2 rounded bg-dark bg-opacity-50">
+                                            <p class="text-white mb-0">Ass. DIAMONEKA VAKANDA Jonathan</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="p-2 rounded bg-dark bg-opacity-50">
+                                            <p class="text-white mb-0">Ass. NTOYA MABEKA Rodrigue</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -228,19 +284,19 @@
                 .always(function() {
                     $(btn).prop('disabled', false).css('opacity', '1');
                 });
-        }
-
-        $(document).ready(function() {
+        }        $(document).ready(function() {
             getStateBulb();
             setInterval(getStateBulb, 1000);
 
-            $('#btnAllumer').click(function() {
-                setStateBulb('on');
+            $('#switchAmpoule').change(function() {
+                const state = $(this).is(':checked') ? 'on' : 'off';
+                setStateBulb(state);
             });
 
-            $('#btnEteindre').click(function() {
-                setStateBulb('off');
-            });
+            // Mettre à jour l'état du switch en fonction de l'état de l'ampoule
+            function updateSwitchState(isOn) {
+                $('#switchAmpoule').prop('checked', isOn);
+            }
         });
     </script>
 </body>
