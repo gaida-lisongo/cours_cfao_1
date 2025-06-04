@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet CFAO 2025</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Style personnalisé -->
+    <style>
+        .ampoule {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #808080;
+            margin: 20px auto;
+            transition: background-color 0.3s ease;
+        }
+        .ampoule.allumee {
+            background-color: #ffeb3b;
+            box-shadow: 0 0 50px #ffeb3b;
+        }
+        .ampoule.eteinte {
+            background-color: #808080;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Section titre -->
+        <div class="row text-center mb-4">
+            <div class="col">
+                <h1>Projet Cours CFAO 2025</h1>
+            </div>
+        </div>
+
+        <!-- Section ampoule -->
+        <div class="row mb-4">
+            <div class="col text-center">
+                <div class="ampoule"></div>
+            </div>
+        </div>
+
+        <!-- Section boutons -->
+        <div class="row mb-4">
+            <div class="col text-center">
+                <button id="btnAllumer" class="btn btn-success me-2">Allumer</button>
+                <button id="btnEteindre" class="btn btn-danger">Éteindre</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery et Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script personnalisé -->
+    <script>
+        function getStateBulb(){
+            $.get(
+                'https://server-ista-gm-production.up.railway.app/esp',
+                function(data) {
+                    console.log(data);
+                    if (data == "1"){
+                        $('.ampoule').removeClass('eteinte').addClass('allumee');
+                    } else {
+                        $('.ampoule').removeClass('allumee').addClass('eteinte');
+                    }
+                }
+            );
+        }
+
+        function setStateBulb(state) {
+            $.get(
+                `http://server-ista-gm-production.up.railway.app/lamp/${state}`,
+                function(data) {
+                    console.log(data);
+                    
+                }
+            );
+        }
+
+        $(document).ready(function() {
+            getStateBulb();
+
+            setInterval(getStateBulb, 1000);
+            $('#btnAllumer').click(function() {
+                setStateBulb('on');
+            });
+
+            $('#btnEteindre').click(function() {
+                setStateBulb('off');
+            });
+        });
+    </script>
+</body>
+</html>
