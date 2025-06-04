@@ -159,71 +159,69 @@
                     <h1 class="display-4 text-white">Projet IoT CFAO 2025</h1>
                     <p class="lead text-white">Contrôle d'éclairage intelligent</p>
                 </div>
-            </div>            <!-- Section switch -->
-            <div class="row mb-4">
-                <div class="col text-center">
-                    <div class="form-check form-switch d-inline-block">
-                        <input class="form-check-input custom-switch" type="checkbox" id="switchAmpoule">
-                        <label class="form-check-label ms-2 text-white" for="switchAmpoule">
-                            Interrupteur
-                        </label>
-                    </div>
-                </div>
             </div>
-
-            <!-- Section ampoule -->
-            <div class="row">
-                <div class="col text-center">
-                    <div class="ampoule-container">
-                        <div class="ampoule"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Indicateur de statut -->
-            <div class="row">
-                <div class="col">
-                    <div class="status-indicator">
-                        <span class="connection-status">
-                            <i class="fas fa-wifi"></i> Connecté à l'ESP
-                        </span>
-                        <div id="ampouleState" class="mt-2 fs-5"></div>
-                    </div>
-                </div>
-            </div>            <!-- Section enseignants -->
-            <div class="row text-center mt-5">
-                <div class="col">
-                    <div class="card bg-dark bg-opacity-50 p-4 encadreurs-card">
-                        <div class="card-body">
-                            <h4 class="text-white mb-4">Encadrement</h4>
-                            <div class="mb-4">
-                                <p class="text-white-50 mb-2">Sous la direction de :</p>
-                                <h5 class="text-white">Prof. Narcisse MENI BABAKIDI</h5>
-                            </div>
-                            <div class="assistants">
-                                <p class="text-white-50 mb-3">Assisté par :</p>
-                                <div class="row justify-content-center">
-                                    <div class="col-md-4 mb-3">
-                                        <div class="p-2 rounded bg-dark bg-opacity-50">
-                                            <p class="text-white mb-0">Ass. LISONGO BAÏTA Gaîda</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <div class="p-2 rounded bg-dark bg-opacity-50">
-                                            <p class="text-white mb-0">Ass. DIAMONEKA VAKANDA Jonathan</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <div class="p-2 rounded bg-dark bg-opacity-50">
-                                            <p class="text-white mb-0">Ass. NTOYA MABEKA Rodrigue</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="control-panel">
+                <!-- Section switch -->
+                <div class="row mb-4">
+                    <div class="col text-center">
+                        <div class="form-check form-switch d-inline-block">
+                            <input class="form-check-input custom-switch" type="checkbox" id="switchAmpoule">
+                            <label class="form-check-label ms-2 text-white" for="switchAmpoule">
+                                Interrupteur
+                            </label>
                         </div>
                     </div>
                 </div>
+
+                <!-- Section ampoule -->
+                <div class="row">
+                    <div class="col text-center">
+                        <div class="ampoule-container">
+                            <div class="ampoule"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Indicateur de statut -->
+                <div class="row">
+                    <div class="col">
+                        <div class="status-indicator">
+                            <span class="connection-status">
+                                <i class="fas fa-wifi"></i> Connecté à l'ESP
+                            </span>
+                            <div id="ampouleState" class="mt-2 fs-5"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Centre le bouton de retour -->
+                <div class="row text-center mt-4">
+                    <button class="btn btn-primary show-panel">Retourner à la page d'accueil</button>
+                </div>
             </div>
+
+            <div class="info-projet">
+                <p class="text-white-50 mb-2">Informations sur le projet :</p>
+                <p class="text-white">Ce projet vise à développer un système de contrôle d'éclairage intelligent basé sur l'IoT.</p>
+                <!-- Section enseignants -->
+                <div class="row text-center mt-5">
+                    <div class="col">
+                        <div class="card bg-dark bg-opacity-50 p-4">
+                            <p class="text-white-50 mb-2">Sous la direction de :</p>
+                            <h5 class="text-white">Prof. Narcisse MENI BABAKIDI</h5>
+                            <p class="text-white-50 mt-3">Assisté par :</p>
+                            <p class="text-white mb-1">Ass. LISONGO BAÏTA Gaîda</p>
+                            <p class="text-white mb-1">Ass. DIAMONEKA VAKANDA Jonathan</p>
+                            <p class="text-white mb-1">Ass. NTOYA MABEKA Rodrigue</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row text-center mt-4">
+                    <button class="btn btn-primary show-panel">Voir le panneau de contrôle</button>
+                </div>
+
+            </div>
+
         </div>
     </div>
 
@@ -284,19 +282,26 @@
                 .always(function() {
                     $(btn).prop('disabled', false).css('opacity', '1');
                 });
-        }        $(document).ready(function() {
+        }
+
+        $(document).ready(function() {
             getStateBulb();
             setInterval(getStateBulb, 1000);
 
-            $('#switchAmpoule').change(function() {
-                const state = $(this).is(':checked') ? 'on' : 'off';
-                setStateBulb(state);
+            $('.control-panel').hide();
+
+            $('.show-panel').click(function() {
+                $('.control-panel').slideToggle();
+                $('.info-projet').slideToggle();
             });
 
-            // Mettre à jour l'état du switch en fonction de l'état de l'ampoule
-            function updateSwitchState(isOn) {
-                $('#switchAmpoule').prop('checked', isOn);
-            }
+            $('#btnAllumer').click(function() {
+                setStateBulb('on');
+            });
+
+            $('#btnEteindre').click(function() {
+                setStateBulb('off');
+            });
         });
     </script>
 </body>
