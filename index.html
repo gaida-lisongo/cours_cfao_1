@@ -3,50 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet CFAO 2025</title>
+    <title>Projet CFAO 2025 - IoT Control</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome pour les icônes -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Style personnalisé -->
     <style>
+        body {
+            background: linear-gradient(135deg, #1a1a1a, #2c3e50);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            padding-top: 2rem;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        .ampoule-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 2rem auto;
+        }
         .ampoule {
+            position: relative;
             width: 100px;
             height: 100px;
+            background: #808080;
             border-radius: 50%;
-            background-color: #808080;
             margin: 20px auto;
-            transition: background-color 0.3s ease;
+            transition: all 0.5s ease;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+        }
+        .ampoule::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 40px;
+            width: 20px;
+            height: 20px;
+            background: #666;
+            border-radius: 5px;
         }
         .ampoule.allumee {
-            background-color: #ffeb3b;
-            box-shadow: 0 0 50px #ffeb3b;
+            background: #ffd700;
+            box-shadow: 
+                0 0 60px #ffd700,
+                0 0 100px #ffd700,
+                0 0 150px #ffd700;
+            animation: pulse 2s infinite;
         }
         .ampoule.eteinte {
-            background-color: #808080;
+            background: #808080;
             box-shadow: none;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .btn-custom {
+            padding: 12px 30px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .btn-allumer {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+        }
+        .btn-eteindre {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        }
+        .status-indicator {
+            padding: 0.5rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .status-indicator i {
+            margin-right: 8px;
+        }
+        .connection-status {
+            font-size: 0.9rem;
+            color: #2ecc71;
         }
     </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <!-- Section titre -->
-        <div class="row text-center mb-4">
-            <div class="col">
-                <h1>Projet Cours CFAO 2025</h1>
+    <div class="container">
+        <div class="card">            <!-- Section titre -->
+            <div class="row text-center mb-4">
+                <div class="col">
+                    <h1 class="display-4 text-white">Projet IoT CFAO 2025</h1>
+                    <p class="lead text-white">Contrôle d'éclairage intelligent</p>
+                    <div class="mt-4">
+                        <p class="text-white-50 mb-2">Sous la direction de :</p>
+                        <h5 class="text-white">Prof. Narcisse MENI BABAKIDI</h5>
+                        <p class="text-white-50 mt-3">Assisté par :</p>
+                        <p class="text-white mb-1">Ass. LISONGO BAÏTA Gaîda</p>
+                        <p class="text-white mb-1">Ass. DIAMONEKA VAKANDA Jonathan</p>
+                        <p class="text-white mb-1">Ass. NTOYA MABEKA Rodrigue</p>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Section ampoule -->
-        <div class="row mb-4">
-            <div class="col text-center">
-                <div class="ampoule"></div>
+            <!-- Section ampoule -->
+            <div class="row mb-4">
+                <div class="col text-center">
+                    <div class="ampoule-container">
+                        <div class="ampoule"></div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Section boutons -->
-        <div class="row mb-4">
-            <div class="col text-center">
-                <button id="btnAllumer" class="btn btn-success me-2">Allumer</button>
-                <button id="btnEteindre" class="btn btn-danger">Éteindre</button>
+            <!-- Section boutons -->
+            <div class="row mb-4">
+                <div class="col text-center">
+                    <button id="btnAllumer" class="btn btn-custom btn-allumer me-3">
+                        <i class="fas fa-power-off"></i> Allumer
+                    </button>
+                    <button id="btnEteindre" class="btn btn-custom btn-eteindre">
+                        <i class="fas fa-power-off"></i> Éteindre
+                    </button>
+                </div>
+            </div>
+
+            <!-- Indicateur de statut -->
+            <div class="row">
+                <div class="col">
+                    <div class="status-indicator">
+                        <span class="connection-status">
+                            <i class="fas fa-wifi"></i> Connecté à l'ESP
+                        </span>
+                        <div id="ampouleState" class="mt-2"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -57,34 +163,59 @@
     
     <!-- Script personnalisé -->
     <script>
-        function getStateBulb(){
-            $.get(
-                'https://server-ista-gm-production.up.railway.app/esp',
-                function(data) {
+        function updateConnectionStatus(connected) {
+            const status = $('.connection-status');
+            if (connected) {
+                status.html('<i class="fas fa-wifi"></i> Connecté à l\'ESP');
+                status.css('color', '#2ecc71');
+            } else {
+                status.html('<i class="fas fa-wifi-slash"></i> Déconnecté');
+                status.css('color', '#e74c3c');
+            }
+        }
+
+        function getStateBulb() {
+            $.get('https://server-ista-gm-production.up.railway.app/esp')
+                .done(function(data) {
                     console.log(data);
-                    if (data == "1"){
+                    if (data == "1") {
                         $('.ampoule').removeClass('eteinte').addClass('allumee');
+                        $('#ampouleState').html('<i class="fas fa-sun"></i> État: Allumée');
                     } else {
                         $('.ampoule').removeClass('allumee').addClass('eteinte');
+                        $('#ampouleState').html('<i class="fas fa-moon"></i> État: Éteinte');
                     }
-                }
-            );
+                    updateConnectionStatus(true);
+                })
+                .fail(function() {
+                    updateConnectionStatus(false);
+                });
         }
 
         function setStateBulb(state) {
-            $.get(
-                `https://server-ista-gm-production.up.railway.app/lamp/${state}`,
-                function(data) {
+            const btn = state === 'on' ? '#btnAllumer' : '#btnEteindre';
+            $(btn).prop('disabled', true).css('opacity', '0.7');
+            
+            $.get(`https://server-ista-gm-production.up.railway.app/lamp/${state}`)
+                .done(function(data) {
                     console.log(data);
-                    
-                }
-            );
+                    if (data == "1") {
+                        $('.ampoule').removeClass('eteinte').addClass('allumee');
+                        $('#ampouleState').html('<i class="fas fa-sun"></i> État: Allumée');
+                    } else {
+                        $('.ampoule').removeClass('allumee').addClass('eteinte');
+                        $('#ampouleState').html('<i class="fas fa-moon"></i> État: Éteinte');
+                    }
+                })
+                .always(function() {
+                    $(btn).prop('disabled', false).css('opacity', '1');
+                });
         }
 
         $(document).ready(function() {
             getStateBulb();
-
             setInterval(getStateBulb, 1000);
+
             $('#btnAllumer').click(function() {
                 setStateBulb('on');
             });
